@@ -59,6 +59,8 @@ export class Start extends Phaser.Scene {
         this.socialMail = new ObjNave(this, centerX,2400 , "mailSocial",0, -1 )
         this.socialLinke = new ObjNave(this, centerX - spacing,2400 , "linkeSocial",0, -1 )
 
+        this.alien1 = new ObjNave(this, 400,400 , "alien1",0, -1 )
+
 
         
         this.text1 = this.add.text(0, 0, 'Eduardo Segura:\n \n Ingeniero de Software', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif', align: "center", fontSize: "45px" }).setPosition(innerWidth /2, innerHeight/2).setOrigin(0.5,0.5)

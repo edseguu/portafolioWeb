@@ -11,6 +11,12 @@
                 "type" : "image",
                 "key" : "meteoro1",
                 "url" : "meteoro1.png"
+            },
+            {
+                "type" :"spritesheet",
+                "key" : "alien1",
+                "url" : "alien1.png",
+                "frameConfig" : {"frameWidth" : 312,"frameHeight" : 334}
             }
         ]
     },

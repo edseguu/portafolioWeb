@@ -1,0 +1,41 @@
+[
+    {
+        "path" : "assets/images",
+        "files" : [
+            {
+                "type" : "image",
+                "key": "background",
+                "url" :"background.png"
+            },
+            {
+                "type" : "image",
+                "key" : "meteoro1",
+                "url" : "meteoro1.png"
+            }
+        ]
+    },
+    {
+        "path": "assets/images/social",
+        "files": [
+            {
+                "type" :"spritesheet",
+                "key" : "githubSocial",
+                "url" : "githubSocial.png",
+                "frameConfig" : {"frameWidth" : 320,"frameHeight" : 311}
+            },
+            {
+                "type" :"spritesheet",
+                "key" : "mailSocial",
+                "url" : "emailSocial.png",
+                "frameConfig" : {"frameWidth" : 320,"frameHeight" : 311}
+            },
+            {
+                "type" :"spritesheet",
+                "key" : "linkeSocial",
+                "url" : "linkedinSocial.png",
+                "frameConfig" : {"frameWidth" : 320,"frameHeight" : 311}
+            }
+        ] 
+        
+    }
+]

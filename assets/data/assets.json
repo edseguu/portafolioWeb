@@ -5,20 +5,33 @@
             {
                 "type" : "image",
                 "key": "background",
-                "url" :"background.png"
-            },
-            {
-                "type" : "image",
-                "key" : "meteoro1",
-                "url" : "meteoro1.png"
-            },
-            {
-                "type" :"spritesheet",
-                "key" : "alien1",
-                "url" : "alien1.png",
-                "frameConfig" : {"frameWidth" : 312,"frameHeight" : 334}
+                "url" :"background1.png"
             }
         ]
+    },
+    {
+        "path" : "assets/images/aliens",
+        "files" : [
+            {
+                "type": "spritesheet",
+                "key": "alien1",
+                "url": "alien1.png",
+                "frameConfig": { "frameWidth": 312, "frameHeight": 335 }
+            },
+            {
+                "type": "spritesheet",
+                "key": "alien2",
+                "url": "alien2.png",
+                "frameConfig": { "frameWidth": 312, "frameHeight": 335 }
+            },
+            {
+                "type": "spritesheet",
+                "key": "alien3",
+                "url": "alien3.png",
+                "frameConfig": { "frameWidth": 312, "frameHeight": 299 }
+            }
+        ]
+
     },
     {
         "path": "assets/images/social",

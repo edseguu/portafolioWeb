@@ -2,7 +2,7 @@ import { Start } from './scenes/Start.js';
 
 const config = {
     type: Phaser.AUTO,
-    scale :{
+    scale: {
         mode: Phaser.Scale.RESIZE,
         parent: 'game-container',
     },
@@ -10,6 +10,12 @@ const config = {
     description: '',
     width: window.innerWidth,
     height: window.innerHeight,
+    input: {
+        touch: {
+            capture: true,
+            enabled: true 
+        }
+    },
     backgroundColor: '#000000',
     pixelArt: false,
     scene: [

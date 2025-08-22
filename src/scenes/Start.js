@@ -1,5 +1,6 @@
 import {ObjMeteoro} from "..//gameObjects/ObjMeteoro.js"
 import { ObjNave } from "../gameObjects/ObjNave.js";
+import { InputScreen } from "./InputScreen.js";
 
 
 
@@ -7,94 +8,118 @@ export class Start extends Phaser.Scene {
 
     constructor() {
         super('Start');
+        this.scrolling = false;
+        this.lastY = 0;
     }
 
     preload() {
         this.load.pack('resource', 'assets/data/assets.json');
     }
 
-    resize(gameSize, baseSize, displaySize, resolution){
-        const width = window.innerWidth
-        const height = window.innerHeight
 
-        this.background.width = width
-        this.background.height = height
-
-
-        this.text1.setPosition(width/2, height/2)
-        this.textProyect.setPosition(width/2, height/1.1)
-
-
-        this.met1.setPosition(width/2, height/2)
-        this.met1.setScale(2)
-        if (width < 900) {
-            this.met1.setScale(4)
-            this.text1.setFontSize("15px")
-            this.nav1.destroy()
-        } else if(width >900){
-            this.text1.setFontSize("45px")
-        }
-
-
-
-    }
-
-    create() {
-
-        const centerX = this.sys.game.config.width / 2;
-        const centerY = this.sys.game.config.height / 2;
-
-
-        
-        
-        this.background = this.add.tileSprite(0, 0, this.scale.width, this.scale.height, 'background').setOrigin(0,0)
-        this.met1 = new ObjMeteoro(this, 50,50, "meteoro1")
-        //this.nav1 = new ObjNave(this, centerX, 1200, "nav1", 0, -1)
-        //this.nav2 = new ObjNave(this, centerX, 1500, "nav2",0, -1 )
-        //this.nav3 = new ObjNave(this, centerX, 1800, "nav3",0, -1 )
-
-        const spacing = 360;
-
-        this.socialGit = new ObjNave(this, centerX + spacing ,2400, "githubSocial",0,-1)
-        this.socialMail = new ObjNave(this, centerX,2400 , "mailSocial",0, -1 )
-        this.socialLinke = new ObjNave(this, centerX - spacing,2400 , "linkeSocial",0, -1 )
-
-        this.alien1 = new ObjNave(this, 400,400 , "alien1",0, -1 )
-
-
-        
-        this.text1 = this.add.text(0, 0, 'Eduardo Segura:\n \n Ingeniero de Software', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif', align: "center", fontSize: "45px" }).setPosition(innerWidth /2, innerHeight/2).setOrigin(0.5,0.5)
-
-        this.textProyect = this.add.text(0, 0, 'Proyectos', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif', align: "center", fontSize: "45px" }).setPosition(innerWidth /2, innerHeight/1.1).setOrigin(0.5,0.5)
-        this.textContact = this.add.text(0, 0, 'Contacto', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif', align: "center", fontSize: "45px" }).setPosition(innerWidth /2, innerHeight/1.1).setOrigin(0.5,-23)
     
-        this.input.on("wheel", (pointer, gameObjects, deltaX, deltaY, deltaZ) =>{
-            this.background.tilePositionY += deltaY * 0.5
-
-            let arrayGameObjects = [
-                //objetos de redes sociales
-                this.socialGit,
-                this.socialLinke,
-                this.socialMail,
-                //objetos de texto
-                this.text1,
-                this.textProyect,
-                this.textContact,
-                //objetos de meteoros
-                this.met1
-            ]
-
-            //Iterador del array (arrayGameObjects), agrega movimiento con el wheel del mouse
-            arrayGameObjects.forEach(element => {
-                element.y -= deltaY * 0.4
-            });
-        })
+    create() {
+        this.input.setDefaultCursor('url(assets/images/a.cur), pointer');
+        this.scale.on('resize', this.resize, this)
 
 
-        this.scale.on("resize", this.resize, this)
-        this.resize()
+        //Fondo de pantalla tileSprite
+       this.background = this.add.tileSprite(0, 0, this.scale.width, this.scale.height, 'background').setOrigin(0, 0);
+
+       // Texto de inicio
+        this.text1 = this.add.text(0, 0, 'Eduardo Segura:\n \n Ingeniero de Software', {
+            fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+            align: "center",
+            fontSize: "45px"
+        }).setOrigin(0.5, 0.5);
+
+        // Texto de proyectos
+        this.textProyect = this.add.text(0, 0, 'Proyectos', {
+            fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+            align: "center",
+            fontSize: "45px"
+        }).setOrigin(0.5, 0.5);
+
+        // Se añaden los 3 aliens
+        this.alien1 = new ObjNave(this, 0, 0, "alien1", 0, -1).setInteractive({ cursor: 'url(assets/images/b.cur), pointer' });
+        this.alien2 = new ObjNave(this, 0, 0, "alien2", 0, -1).setInteractive({ cursor: 'url(assets/images/b.cur), pointer' });
+        this.alien3 = new ObjNave(this, 0, 0, "alien3", 0, -1).setInteractive({ cursor: 'url(assets/images/b.cur), pointer' });
+
+
+        // Texto de proyectos
+        this.textProyectMore = this.add.text(0, 0, 'Mas proyectos...', {
+            fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+            align: "center",
+            fontSize: "35px"
+        }).setOrigin(0.5, 0.5).setColor("#5bb3d8ff").setInteractive({ cursor: 'url(assets/images/b.cur), pointer' });
+
+
+        // Texto de contacto
+        this.textContact = this.add.text(0, 0, 'Contacto', {
+            fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+            align: "center",
+            fontSize: "45px"
+        }).setOrigin(0.5, 0.5);
+
+
+        // Se añaden los 3 sociales
+        this.socialGit = new ObjNave(this, 0, 0, "githubSocial", 0, -1).setInteractive({ cursor: 'url(assets/images/b.cur), pointer' });
+        this.socialMail = new ObjNave(this, 0, 0, "mailSocial", 0, -1).setInteractive({ cursor: 'url(assets/images/b.cur), pointer' });
+        this.socialLinke = new ObjNave(this, 0, 0, "linkeSocial", 0, -1).setInteractive({ cursor: 'url(assets/images/b.cur), pointer' });
+
+
+        const initialHeight = this.scale.height;
+        this.text1.y = initialHeight * 0.50;
+        this.textProyect.y = initialHeight * 0.9;
+
+        const alienY = initialHeight * 0.50; //modificar 
+        this.alien1.y = alienY;
+        this.alien2.y = alienY;
+        this.alien3.y = alienY;
+
+        this.textProyectMore.y = initialHeight * 1.5;
+        this.textContact.y = initialHeight * 1.8;
+
+        const socialY = initialHeight * 0.70; //2.1 antes
+        this.socialGit.y = socialY;
+        this.socialMail.y = socialY;
+        this.socialLinke.y = socialY;
         
+        this.resize({ width: this.scale.width, height: this.scale.height });
+        
+
+        this.touchInputManager = new InputScreen(this);
     }
+    
+    
+    resize(gameSize, baseSize, displaySize, resolution) {
+        const width = gameSize.width;
+        const height = gameSize.height;
+        
+        // Actualiza el tamaño del fondo
+        this.background.setDisplaySize(width, height);
+        
+        // Posiciona todos los elementos, manteniendo la posición 'y' relativa
+        // que ya fue definida en create() o modificada por el scroll, y centra la 'x'.
+        this.text1.setX(width / 2);
+        
+    this.textProyect.setX(width / 2);
+
+
+    const spacingXalien = 450;
+    this.alien1.setX(width / 2 - spacingXalien);
+    this.alien2.setX(width / 2);
+    this.alien3.setX(width / 2 + spacingXalien);
+
+    this.textProyectMore.setX(width / 2);
+    
+    this.textContact.setX(width / 2);
+
+    const spacingXsocial = 360;
+    this.socialGit.setX(width / 2 + spacingXsocial);
+    this.socialMail.setX(width / 2);
+    this.socialLinke.setX(width / 2 - spacingXsocial);
+}
 
 
 

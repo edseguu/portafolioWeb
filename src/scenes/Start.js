@@ -19,7 +19,7 @@ export class Start extends Phaser.Scene {
 
     
     create() {
-        this.input.setDefaultCursor('url(assets/images/a.cur), pointer');
+        this.input.setDefaultCursor('url(assets/images/a.cur), none');
         this.scale.on('resize', this.resize, this)
 
 
@@ -27,13 +27,13 @@ export class Start extends Phaser.Scene {
        this.background = this.add.tileSprite(0, 0, this.scale.width, this.scale.height, 'background').setOrigin(0, 0);
 
        // Texto de inicio
-        this.text1 = this.add.text(0, 0, 'Eduardo Segura:\n \n Ingeniero de Software', {
-            fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
-            align: "center",
-            fontSize: "45px"
-        }).setOrigin(0.5, 0.5);
-
-        // Texto de proyectos
+       this.text1 = this.add.text(0, 0, 'Eduardo Segura:\n \n Ingeniero de Software', {
+        fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+        align: "center",
+        fontSize: "45px"
+    }).setOrigin(0.5, 0.5);
+    
+    // Texto de proyectos
         this.textProyect = this.add.text(0, 0, 'Proyectos', {
             fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
             align: "center",
@@ -72,7 +72,7 @@ export class Start extends Phaser.Scene {
         this.text1.y = initialHeight * 0.50;
         this.textProyect.y = initialHeight * 0.9;
 
-        const alienY = initialHeight * 0.50; //modificar 
+        const alienY = initialHeight * 1.2
         this.alien1.y = alienY;
         this.alien2.y = alienY;
         this.alien3.y = alienY;
@@ -80,7 +80,7 @@ export class Start extends Phaser.Scene {
         this.textProyectMore.y = initialHeight * 1.5;
         this.textContact.y = initialHeight * 1.8;
 
-        const socialY = initialHeight * 0.70; //2.1 antes
+        const socialY = initialHeight * 2.1;
         this.socialGit.y = socialY;
         this.socialMail.y = socialY;
         this.socialLinke.y = socialY;
@@ -89,46 +89,80 @@ export class Start extends Phaser.Scene {
         
 
         this.touchInputManager = new InputScreen(this);
+
+        console.log(this.text1.style);
+        
     }
     
     
     resize(gameSize, baseSize, displaySize, resolution) {
-        const width = gameSize.width;
-        const height = gameSize.height;
+        const { width, height } = gameSize;
+        this.cameras.main.setViewport(0, 0, width, height);
         
         // Actualiza el tamaño del fondo
-        this.background.setDisplaySize(width, height);
+        this.background.width = width;
+        this.background.height = height;
         
         // Posiciona todos los elementos, manteniendo la posición 'y' relativa
         // que ya fue definida en create() o modificada por el scroll, y centra la 'x'.
         this.text1.setX(width / 2);
+        this.textProyect.setX(width / 2);
+
+
+        const spacingXalien = 450;
+        this.alien1.setX(width / 2 - spacingXalien);
+        this.alien2.setX(width / 2);
+        this.alien3.setX(width / 2 + spacingXalien);
+
+        this.textProyectMore.setX(width / 2);
         
-    this.textProyect.setX(width / 2);
+        this.textContact.setX(width / 2);
 
-
-    const spacingXalien = 450;
-    this.alien1.setX(width / 2 - spacingXalien);
-    this.alien2.setX(width / 2);
-    this.alien3.setX(width / 2 + spacingXalien);
-
-    this.textProyectMore.setX(width / 2);
-    
-    this.textContact.setX(width / 2);
-
-    const spacingXsocial = 360;
-    this.socialGit.setX(width / 2 + spacingXsocial);
-    this.socialMail.setX(width / 2);
-    this.socialLinke.setX(width / 2 - spacingXsocial);
+        const spacingXsocial = 360;
+        this.socialGit.setX(width / 2 + spacingXsocial);
+        this.socialMail.setX(width / 2);
+        this.socialLinke.setX(width / 2 - spacingXsocial);
 }
 
 
 
     update() {
-        
-       // if (this.met1.y > innerHeight || this.met1.y < -100) {
-         //   this.met1.destroy()
-          //  this.met1 = this.add.image(50,innerHeight, 'met1')
-        //}       
+
+
+
+        if (window.innerWidth > 900 && window.innerWidth < 1000) {
+            this.text1.style.setFontSize("45px")
+            this.textProyect.setFontSize("80px")
+            
+            this.alien1.setPosition(innerWidth/2, this.textProyect.y + 350)
+            this.alien2.setPosition(innerWidth / 2, this.alien1.y + 550)
+            this.alien3.setPosition(innerWidth / 2, this.alien2.y + 550)
+            
+            
+            this.textProyectMore.setPosition(innerWidth / 2, this.alien3.y + 250)
+            this.textContact.setPosition(innerWidth / 2, this.textProyectMore.y + 200)
+
+            this.socialLinke.setPosition(innerWidth / 2, this.textContact.y + 250)
+            this.socialMail.setPosition(innerWidth / 2, this.socialLinke.y + 400)
+            this.socialGit.setPosition(innerWidth / 2, this.socialMail.y + 400)
+        }
+        if (window.innerWidth > 300 && window.innerWidth < 900) {
+            this.text1.style.setFontSize("25px")
+
+            
+            
+            this.alien1.setPosition(innerWidth/2, this.textProyect.y + 250)
+            this.alien2.setPosition(innerWidth / 2, this.alien1.y + 400)
+            this.alien3.setPosition(innerWidth / 2, this.alien2.y + 400)
+
+
+            this.textProyectMore.setPosition(innerWidth / 2, this.alien3.y + 250)
+            this.textContact.setPosition(innerWidth / 2, this.textProyectMore.y + 200)
+
+            this.socialLinke.setPosition(innerWidth / 2, this.textContact.y + 250)
+            this.socialMail.setPosition(innerWidth / 2, this.socialLinke.y + 400)
+            this.socialGit.setPosition(innerWidth / 2, this.socialMail.y + 400)
+        }
     }
     
 }

@@ -6,8 +6,33 @@
                 "type" : "image",
                 "key": "background",
                 "url" :"background1.png"
+            },
+            {
+                "type": "spritesheet",
+                "key": "cartel",
+                "url": "cartel.png",
+                "frameConfig": { "frameWidth": 274, "frameHeight": 128 }
+            }
+
+        ]
+    },
+    {
+        "path" : "assets/images/objetosFondo",
+        "files" : [
+            {
+                "type": "spritesheet",
+                "key": "obj1",
+                "url": "obj1.png",
+                "frameConfig": { "frameWidth": 60, "frameHeight": 59 }
+            },
+            {
+                "type": "spritesheet",
+                "key": "obj2",
+                "url": "obj2.png",
+                "frameConfig": { "frameWidth": 46, "frameHeight": 26 }
             }
         ]
+
     },
     {
         "path" : "assets/images/aliens",

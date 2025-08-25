@@ -39,7 +39,9 @@ export class InputScreen {
                         this.scene.textContact,
                         this.scene.alien1,
                         this.scene.alien2,
-                        this.scene.alien3
+                        this.scene.alien3,
+                        this.scene.cartel,
+                        this.scene.cartel2
                     ];
                     arrayGameObjects.forEach(element => {
                         element.y += deltaY;
@@ -78,7 +80,10 @@ export class InputScreen {
                 this.scene.textContact,
                 this.scene.alien1,
                 this.scene.alien2,
-                this.scene.alien3
+                this.scene.alien3,
+                this.scene.cartel,
+                this.scene.cartel2
+
             ];
             arrayGameObjects.forEach(element => {
                 element.y -= deltaY * 0.4;

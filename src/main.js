@@ -4,12 +4,12 @@ const config = {
     type: Phaser.AUTO,
     scale: {
         mode: Phaser.Scale.RESIZE,
-        autoCenter: Phaser.Scale.CENTER_BOTH,
+        parent: 'game-container',
     },
     title: 'Overlord Rising',
     description: '',
-    width: 800,
-    height: 600,
+    width: window.innerWidth,
+    height: window.innerHeight,
     input: {
         touch: {
             capture: true,
@@ -18,6 +18,12 @@ const config = {
     },
     backgroundColor: '#000000',
     pixelArt: false,
+    physics: {
+        default: 'arcade',
+        arcade: {
+            debug: false
+        }
+    },
     scene: [
         Start
     ]

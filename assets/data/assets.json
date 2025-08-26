@@ -30,6 +30,20 @@
                 "key": "obj2",
                 "url": "obj2.png",
                 "frameConfig": { "frameWidth": 46, "frameHeight": 26 }
+            },
+            {
+                "type": "spritesheet",
+                "key": "obj3",
+                "url": "obj3.png",
+                "frameConfig": { "frameWidth": 75, "frameHeight": 49 }
+
+            },
+            {
+                "type": "spritesheet",
+                "key": "obj4",
+                "url": "obj4.png",
+                "frameConfig": { "frameWidth": 23, "frameHeight": 36 }
+
             }
         ]
 

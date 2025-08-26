@@ -14,7 +14,9 @@ export class ObjFondo {
 
         const arrayObjFondo = [
             this.scene.obj1,
-            this.scene.obj2
+            this.scene.obj2,
+            this.scene.obj3,
+            this.scene.obj4
         ]
 
 

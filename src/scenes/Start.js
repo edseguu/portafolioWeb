@@ -29,6 +29,8 @@ export class Start extends Phaser.Scene {
         //Objetos de fondo
         this.obj1 = new ObjNave(this,-100, -10, 'obj1', 0, -1).setInteractive()
         this.obj2 = new ObjNave(this,600, -100, 'obj2', 0, -1).setInteractive()
+        this.obj3 = new ObjNave(this,-900, -100, 'obj3', 0, -1).setInteractive()
+        this.obj4 = new ObjNave(this,-900, -100, 'obj4', 0, -1).setInteractive()
 
 
         this.setUpObjFondo = new ObjFondo(this);
@@ -149,6 +151,8 @@ export class Start extends Phaser.Scene {
     update() {
         this.physics.world.wrap(this.obj1, 50);
         this.physics.world.wrap(this.obj2, 50);
+        this.physics.world.wrap(this.obj3, 60);
+        this.physics.world.wrap(this.obj4, 40);
 
         this.score.setText("Score:" + " " +this.scorePoint)
 

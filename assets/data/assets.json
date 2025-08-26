@@ -44,6 +44,12 @@
                 "url": "obj4.png",
                 "frameConfig": { "frameWidth": 23, "frameHeight": 36 }
 
+            },
+            {
+                "type": "spritesheet",
+                "key": "obj5",
+                "url": "obj5.png",
+                "frameConfig": { "frameWidth": 30, "frameHeight": 19 }
             }
         ]
 

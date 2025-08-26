@@ -31,6 +31,7 @@ export class Start extends Phaser.Scene {
         this.obj2 = new ObjNave(this,600, -100, 'obj2', 0, -1).setInteractive()
         this.obj3 = new ObjNave(this,-900, -100, 'obj3', 0, -1).setInteractive()
         this.obj4 = new ObjNave(this,-900, -100, 'obj4', 0, -1).setInteractive()
+        this.obj5 = new ObjNave(this,-1100, -100, 'obj5', 0, -1).setInteractive()
 
 
         this.setUpObjFondo = new ObjFondo(this);
@@ -40,6 +41,11 @@ export class Start extends Phaser.Scene {
         fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
         align: "center",
         fontSize: "30px"
+    }).setOrigin(0.5, 0.5);
+        this.scoreLevel = this.add.text(100, 90, "5 = ?", {
+        fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+        align: "center",
+        fontSize: "20px"
     }).setOrigin(0.5, 0.5);
     
     
@@ -153,6 +159,7 @@ export class Start extends Phaser.Scene {
         this.physics.world.wrap(this.obj2, 50);
         this.physics.world.wrap(this.obj3, 60);
         this.physics.world.wrap(this.obj4, 40);
+        this.physics.world.wrap(this.obj5, 40);
 
         this.score.setText("Score:" + " " +this.scorePoint)
 

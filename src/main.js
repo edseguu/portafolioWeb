@@ -1,3 +1,4 @@
+import { BulletSpace } from './scenes/BulletSpace.js';
 import { Start } from './scenes/Start.js';
 
 const config = {
@@ -25,7 +26,8 @@ const config = {
         }
     },
     scene: [
-        Start
+
+        BulletSpace
     ]
 }
 

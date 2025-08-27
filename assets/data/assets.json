@@ -101,5 +101,16 @@
             }
         ] 
         
+    },
+    {
+        "path": "assets/images/bulletSpace",
+        "files": [
+            {
+                "type": "spritesheet",
+                "key": "player",
+                "url": "player.png",
+                "frameConfig": { "frameWidth": 239, "frameHeight": 164 } 
+            }
+        ]
     }
 ]

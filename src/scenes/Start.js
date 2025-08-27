@@ -1,5 +1,5 @@
 import {ObjFondo} from "../gameObjects/ObjFondo.js"
-import { ObjNave } from "../gameObjects/ObjNave.js";
+import { MoveObject } from "../gameObjects/MoveObject.js";
 import { InputScreen } from "./InputScreen.js";
 
 
@@ -27,11 +27,11 @@ export class Start extends Phaser.Scene {
         
         
         //Objetos de fondo
-        this.obj1 = new ObjNave(this,-100, -10, 'obj1', 0, -1).setInteractive()
-        this.obj2 = new ObjNave(this,600, -100, 'obj2', 0, -1).setInteractive()
-        this.obj3 = new ObjNave(this,-900, -100, 'obj3', 0, -1).setInteractive()
-        this.obj4 = new ObjNave(this,-900, -100, 'obj4', 0, -1).setInteractive()
-        this.obj5 = new ObjNave(this,-1100, -100, 'obj5', 0, -1).setInteractive()
+        this.obj1 = new MoveObject(this,-100, -10, 'obj1', 0, -1).setInteractive()
+        this.obj2 = new MoveObject(this,600, -100, 'obj2', 0, -1).setInteractive()
+        this.obj3 = new MoveObject(this,-900, -100, 'obj3', 0, -1).setInteractive()
+        this.obj4 = new MoveObject(this,-900, -100, 'obj4', 0, -1).setInteractive()
+        this.obj5 = new MoveObject(this,-1100, -100, 'obj5', 0, -1).setInteractive()
 
 
         this.setUpObjFondo = new ObjFondo(this);
@@ -52,8 +52,8 @@ export class Start extends Phaser.Scene {
     
     
     //cartel de peligro
-    this.cartel = new ObjNave(this, 0 ,0, "cartel", 0 ,-1)
-    this.cartel2 = new ObjNave(this, 0 ,0, "cartel", 0 ,-1)
+    this.cartel = new MoveObject(this, 0 ,0, "cartel", 0 ,-1)
+    this.cartel2 = new MoveObject(this, 0 ,0, "cartel", 0 ,-1)
     
 
 
@@ -73,9 +73,9 @@ export class Start extends Phaser.Scene {
 
 
         // Se añaden los 3 aliens
-        this.alien1 = new ObjNave(this, 0, 0, "alien1", 0, -1).setInteractive({ cursor: 'url(assets/images/b.cur), pointer' });
-        this.alien2 = new ObjNave(this, 0, 0, "alien2", 0, -1).setInteractive({ cursor: 'url(assets/images/b.cur), pointer' });
-        this.alien3 = new ObjNave(this, 0, 0, "alien3", 0, -1).setInteractive({ cursor: 'url(assets/images/b.cur), pointer' });
+        this.alien1 = new MoveObject(this, 0, 0, "alien1", 0, -1).setInteractive({ cursor: 'url(assets/images/b.cur), pointer' });
+        this.alien2 = new MoveObject(this, 0, 0, "alien2", 0, -1).setInteractive({ cursor: 'url(assets/images/b.cur), pointer' });
+        this.alien3 = new MoveObject(this, 0, 0, "alien3", 0, -1).setInteractive({ cursor: 'url(assets/images/b.cur), pointer' });
 
 
         // Texto de más proyectos
@@ -95,9 +95,9 @@ export class Start extends Phaser.Scene {
 
 
         // Se añaden los 3 sociales
-        this.socialGit = new ObjNave(this, 0, 0, "githubSocial", 0, -1).setInteractive({ cursor: 'url(assets/images/b.cur), pointer' });
-        this.socialMail = new ObjNave(this, 0, 0, "mailSocial", 0, -1).setInteractive({ cursor: 'url(assets/images/b.cur), pointer' });
-        this.socialLinke = new ObjNave(this, 0, 0, "linkeSocial", 0, -1).setInteractive({ cursor: 'url(assets/images/b.cur), pointer' });
+        this.socialGit = new MoveObject(this, 0, 0, "githubSocial", 0, -1).setInteractive({ cursor: 'url(assets/images/b.cur), pointer' });
+        this.socialMail = new MoveObject(this, 0, 0, "mailSocial", 0, -1).setInteractive({ cursor: 'url(assets/images/b.cur), pointer' });
+        this.socialLinke = new MoveObject(this, 0, 0, "linkeSocial", 0, -1).setInteractive({ cursor: 'url(assets/images/b.cur), pointer' });
         
         this.resize({ width: this.scale.width, height: this.scale.height });
         

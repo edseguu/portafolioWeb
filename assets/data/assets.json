@@ -110,6 +110,12 @@
                 "key": "player",
                 "url": "player.png",
                 "frameConfig": { "frameWidth": 239, "frameHeight": 164 } 
+            },
+            {
+                "type": "spritesheet",
+                "key": "bullet",
+                "url": "bullet.png",
+                "frameConfig": { "frameWidth": 48, "frameHeight": 80 } 
             }
         ]
     }

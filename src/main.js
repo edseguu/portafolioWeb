@@ -1,4 +1,4 @@
-import { BulletSpace } from './scenes/BulletSpace.js';
+import { BulletSpace, GameOverScene } from './scenes/BulletSpace.js';
 import { Start } from './scenes/Start.js';
 
 const config = {
@@ -26,10 +26,10 @@ const config = {
         }
     },
     scene: [
-
-        BulletSpace
+        Start,
+        BulletSpace,
+        GameOverScene
     ]
 }
 
 new Phaser.Game(config);
-            

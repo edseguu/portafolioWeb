@@ -1,5 +1,32 @@
 import { MoveObject } from "../gameObjects/MoveObject.js";
 import { GroupBullets } from "../gameObjects/GroupBullets.js";
+import { BulletEnemy } from "../gameObjects/BulletEnemy.js";
+
+export class GameOverScene extends Phaser.Scene {
+	constructor() {
+		super("GameOverScene");
+	}
+	create() {
+		const width = this.scale.width;
+		const height = this.scale.height;
+		const isSmall = width < 1000;
+		const fontSizeRestart = isSmall ? '48px' : '32px';
+		const fontSizeBack = isSmall ? '40px' : '28px';
+		this.add.text(width / 2, height / 2 - 40, 'GAME OVER', { fontSize: isSmall ? '80px' : '64px', fill: '#ff0000' }).setOrigin(0.5);
+		const restartBtn = this.add.text(width / 2, height / 2 + 40, 'Reiniciar', { fontSize: fontSizeRestart, fill: '#fff', backgroundColor: '#333', padding: { x: 30, y: 18 } }).setOrigin(0.5).setInteractive();
+		restartBtn.on('pointerdown', () => {
+			this.scene.stop('GameOverScene');
+			this.scene.stop('BulletSpace');
+			this.scene.start('BulletSpace');
+		});
+		const backBtn = this.add.text(width / 2, height / 2 + 120, 'Volver a Inicio', { fontSize: fontSizeBack, fill: '#fff', backgroundColor: '#225', padding: { x: 28, y: 14 } }).setOrigin(0.5).setInteractive();
+		backBtn.on('pointerdown', () => {
+			this.scene.stop('GameOverScene');
+			this.scene.stop('BulletSpace');
+			this.scene.start('Start');
+		});
+	}
+}
 
 export class BulletSpace extends Phaser.Scene {
 
@@ -15,7 +42,7 @@ export class BulletSpace extends Phaser.Scene {
 
 		this.background = this.add.tileSprite(0, 0, this.scale.width, this.scale.height, 'background').setOrigin(0, 0);
 
-		this.boss = this.add.sprite(innerWidth / 2, 200, 'boss').setScale(0.5)
+		this.boss = new MoveObject(this, this.scale.width / 2, 200, 'boss', 0, -1).setScale(0.5)
 		this.physics.add.existing(this.boss);
 		this.boss.body.setImmovable(true);
 
@@ -31,7 +58,13 @@ export class BulletSpace extends Phaser.Scene {
         	repeat: -1
     	});
 		
-		
+		// Animación para las balas enemigas
+    	this.anims.create({
+            key: 'animaPlayEnemy', // Animación para bulletEnemy
+            frames: this.anims.generateFrameNumbers('bulletEnemy', { start: 0, end: -1 }), // Usa todos los frames
+            frameRate: 15,
+            repeat: -1
+        });
 		
 		
 		this.player = new MoveObject(this,innerWidth /2, 900, 'player', 0, -1).setScale(0.6)
@@ -45,7 +78,7 @@ export class BulletSpace extends Phaser.Scene {
 		
 		this.cursors = this.input.keyboard.createCursorKeys();
 		this.time.addEvent({
-            delay: 700, 
+            delay: 400, 
             callback: () => {
                 this.bullets.fireBullet(this.player.x, this.player.y - 50);
             },
@@ -81,8 +114,120 @@ export class BulletSpace extends Phaser.Scene {
 		this.bossLife = 100;
 		this.bossLifeText = this.add.text(20, 20, 'Boss Vida: ' + this.bossLife, { fontSize: '32px', fill: '#fff' });
 		this.bossSpeedX = 6; // velocidad del boss en X
+
+		// Grupo de balas enemigas
+		this.enemyBullets = this.physics.add.group({
+			classType: BulletEnemy,
+			runChildUpdate: true,
+			maxSize: 20
+		});
+
+		// Temporizador para disparar desde el boss hacia el player
+		this.bossShootDelay = 850;
+		this.bossShootEvent = this.time.addEvent({
+			delay: this.bossShootDelay,
+			loop: true,
+			callback: () => {
+				const bullet = this.enemyBullets.get();
+				if (bullet) {
+					const randomScale = 0.5 + Math.random() * 0.5; // Entre 0.5 y 1
+					bullet.setScale(randomScale);
+					bullet.fire(this.boss.x, this.boss.y + this.boss.displayHeight / 2, this.player.x, this.player.y);
+				}
+			}
+		});
+		
+		// Colisión entre balas del player y balas enemy
+		this.physics.add.collider(
+			this.bullets,
+			this.enemyBullets,
+			null, // collideCallback
+			(playerBullet, enemyBullet) => {
+				// Solo procesar si ambas están activas
+				if (playerBullet.active && enemyBullet.active) {
+					playerBullet.setActive(false);
+					playerBullet.setVisible(false);
+					enemyBullet.setActive(false);
+					enemyBullet.setVisible(false);
+					return true; // Solo una colisión por frame
+				}
+				return false;
+			},
+			this
+		);
+
+		// Colisión entre balas enemy y el player
+    	this.physics.add.collider(this.enemyBullets, this.player, (enemyBullet, player) => {
+        	if (enemyBullet.active && player.active) {
+            	enemyBullet.setActive(false);
+            	enemyBullet.setVisible(false);
+            	this.gameOver();
+        	}
+    	});
+    	// Colisión entre player y boss
+    	this.physics.add.collider(this.player, this.boss, (player, boss) => {
+        	if (player.active && boss.active) {
+            	this.gameOver();
+        	}
+    	});
+		
+		this.laserGroup = this.add.group();
+		this.time.addEvent({
+			delay: 3000,
+			loop: true,
+			callback: () => {
+				// Activa el bloom antes de disparar el láser
+				if (this.boss && this.boss.bloomEffect) {
+					this.boss.bloomEffect.strength = 1.2;
+					this.boss.bloomEffect.color = 0x00aaff;
+				}
+				this.time.delayedCall(200, () => {
+					this.fireBossLaser();
+				});
+			}
+		});
 	}
 
+
+	fireBossLaser() {
+		const laser = this.add.graphics();
+		laser.alpha = 0;
+		laser.lineStyle(20, 0x00aaff, 1);
+		laser.beginPath();
+		laser.moveTo(this.boss.x, this.boss.y + this.boss.displayHeight / 2);
+		laser.lineTo(this.boss.x, this.scale.height);
+		laser.strokePath();
+		laser.closePath();
+		this.laserGroup.add(laser);
+		laser.laserX = this.boss.x;
+		laser.laserY1 = this.boss.y + this.boss.displayHeight / 2;
+		laser.laserY2 = this.scale.height;
+		// Fade in
+		this.tweens.add({
+			targets: laser,
+			alpha: 1,
+			duration: 0,
+			ease: 'Linear',
+			onComplete: () => {
+				// Fade out después de 300ms visible
+				this.tweens.add({
+					targets: laser,
+					alpha: 0,
+					duration: 800,
+					ease: 'Linear',
+					onComplete: () => {
+						laser.destroy();
+						// Quita el bloom del boss
+						if (this.boss && this.boss.bloomEffect) {
+							this.boss.bloomEffect.strength = 0;
+						}
+					}
+				});
+			}
+		});
+		laser.active = true;
+		this.laserActive = laser;
+	}
 
 	bulletHitBoss(boss, bullet) {
 		bullet.setActive(false);
@@ -93,6 +238,11 @@ export class BulletSpace extends Phaser.Scene {
 		this.bossLife = Math.max(0, this.bossLife - 1);
 		this.bossLifeText.setText('Boss Vida: ' + this.bossLife);
 
+		if (this.bossLife === 0) {
+			this.scene.stop('BulletSpace');
+			this.scene.start('Start');
+			return;
+		}
 
     // Obtiene el efecto de bloom del jefe.
     const bloomEffect = boss.bloomEffect;
@@ -107,8 +257,13 @@ export class BulletSpace extends Phaser.Scene {
     }
 }
 
-	update(){
+	gameOver() {
+		// Pausa la escena
+		this.scene.pause();
+		this.scene.launch('GameOverScene');
+	}
 
+	update() {
 		this.player.body.setVelocity(0);
 
 		if(this.cursors.left.isDown){
@@ -136,8 +291,9 @@ export class BulletSpace extends Phaser.Scene {
 
 			
 		}
-		if (window.innerWidth < 1000) {
-			this.player.setScale(1)
+		if (window.innerWidth < 1000 && window.innerWidth > 900 ) {
+		
+			this.player.setScale(0.8)
 			this.bullets.children.each(bullet => {
             if (bullet.active) {
                 bullet.setScale(0.5);
@@ -146,12 +302,49 @@ export class BulletSpace extends Phaser.Scene {
 			
 		}
 
+
+		if (window.innerWidth < 900 && window.innerWidth > 200) {
+			this.player.setScale(0.4);
+			this.bullets.children.each(bullet => {
+				if (bullet.active) {
+					bullet.setScale(0.2);
+				}
+			});
+			this.boss.setScale(0.3);
+			this.bossLifeText.setFontSize('18px');
+			// Ajusta el fondo
+			if (this.background) {
+				this.background.setSize(this.scale.width, this.scale.height);
+			}
+			// Ajusta balas enemigas
+			this.enemyBullets.children.each(bullet => {
+				if (bullet.active) {
+					bullet.setScale(0.2);
+				}
+			});
+			// Ajusta botones de Game Over si existen
+			if (this.scene.isActive('GameOverScene')) {
+				const gameOverScene = this.scene.get('GameOverScene');
+				if (gameOverScene.restartBtn) gameOverScene.restartBtn.setFontSize('48px');
+				if (gameOverScene.backBtn) gameOverScene.backBtn.setFontSize('40px');
+			}
+			// Reduce velocidad del boss en X (sobrescribe cualquier lógica anterior)
+			this.bossSpeedX = this.bossSpeedX < 0 ? -2 : 2;
+			// Haz el láser más delgado
+			if (this.laserActive) {
+				this.laserActive.lineWidth = 3;
+			}
+		}
+
 		// Movimiento automático del boss en eje X
 		if (this.boss) {
-			if (this.bossLife < 60) {
-				this.bossSpeedX = this.bossSpeedX < 0 ? -9: 9;
-			} else {
-				this.bossSpeedX = this.bossSpeedX < 0 ? -6 : 6;
+			// Si pantalla pequeña, no modificar bossSpeedX aquí
+			if (!(window.innerWidth < 900 && window.innerWidth > 200)) {
+				if (this.bossLife < 60) {
+					this.bossSpeedX = this.bossSpeedX < 0 ? -9: 9;
+				} else {
+					this.bossSpeedX = this.bossSpeedX < 0 ? -6 : 6;
+				}
 			}
 			this.boss.x += this.bossSpeedX;
 			// Rebote en los bordes usando displayWidth
@@ -166,6 +359,48 @@ export class BulletSpace extends Phaser.Scene {
 			}
 		}
 
+		// Actualiza las balas enemigas
+		this.enemyBullets.children.each(bullet => {
+			if (bullet.active) {
+				bullet.update();
+			}
+		});
+		
+		// Cambia el delay del disparo del boss según la vida
+		if (this.bossShootEvent) {
+			const newDelay = this.bossLife < 50 ? 330 : 550;
+			if (this.bossShootEvent.delay !== newDelay) {
+				this.bossShootEvent.reset({ delay: newDelay, callback: this.bossShootEvent.callback, callbackScope: this.bossShootEvent.callbackScope, loop: true });
+			}
+		}
+
+		// Colisión player-láser
+		if (
+			this.laserActive &&
+			this.laserActive.active &&
+			this.player.active &&
+			this.laserActive.alpha > 0.5 // Solo cuando el láser es visible
+		) {
+			const px = this.player.x;
+			const py = this.player.y;
+			const laserX = this.laserActive.laserX;
+			const laserY1 = this.laserActive.laserY1;
+			const laserY2 = this.laserActive.laserY2;
+			const laserWidth = 20;
+			if (
+				px > laserX - laserWidth / 2 && px < laserX + laserWidth / 2 &&
+				py > laserY1 && py < laserY2
+			) {
+				this.laserActive.active = false;
+				this.gameOver();
+			}
+		}
+	}
+
+	resizeBackground(gameSize) {
+		if (this.background) {
+			this.background.setSize(gameSize.width, gameSize.height);
+		}
 	}
 }
 

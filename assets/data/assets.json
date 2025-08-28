@@ -122,6 +122,13 @@
                 "key": "boss",
                 "url": "boss.png",
                 "frameConfig": { "frameWidth": 699, "frameHeight": 390 } 
+            },
+            {
+                "type": "spritesheet",
+                "key": "bulletEnemy",
+                "url": "bulletEnemy.png",
+                "frameConfig": { "frameWidth": 141, "frameHeight": 133 } 
+
             }
         ]
     }

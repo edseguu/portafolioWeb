@@ -116,6 +116,12 @@
                 "key": "bullet",
                 "url": "bullet.png",
                 "frameConfig": { "frameWidth": 48, "frameHeight": 80 } 
+            },
+            {
+                "type": "spritesheet",
+                "key": "boss",
+                "url": "boss.png",
+                "frameConfig": { "frameWidth": 699, "frameHeight": 390 } 
             }
         ]
     }

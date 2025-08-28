@@ -27,7 +27,7 @@ const config = {
         }
     },
     scene: [
-    
+        Start,
         BulletSpace,
         GameOverScene
     ]

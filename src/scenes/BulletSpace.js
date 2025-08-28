@@ -1,7 +1,6 @@
 import { MoveObject } from "../gameObjects/MoveObject.js";
 import { GroupBullets } from "../gameObjects/GroupBullets.js";
 import { BulletEnemy } from "../gameObjects/BulletEnemy.js";
-import { GameOverScene } from './GameOverScene.js';
 
 
 export class BulletSpace extends Phaser.Scene {
@@ -169,8 +168,7 @@ export class BulletSpace extends Phaser.Scene {
 		});
 
 
-		// Instancia de GameOverScene
-		this.GameOverScene= this.scene.get('GameOverScene');
+
 	}
 
 
@@ -250,18 +248,6 @@ export class BulletSpace extends Phaser.Scene {
 
 	update() {
 		this.player.body.setVelocity(0);
-
-		if(this.cursors.left.isDown){
-			this.player.body.setVelocityX(-300);
-        }else if(this.cursors.right.isDown){
-            this.player.body.setVelocityX(300);
-        }
-
-		if (this.cursors.up.isDown){
-            this.player.body.setVelocityY(-300);
-        }else if (this.cursors.down.isDown){
-            this.player.body.setVelocityY(300);
-        }
 
 		if (window.innerWidth < 900 && window.innerWidth > 200 && this.boss) {
 			this.boss.y = this.boss.displayHeight / 2 + 10;

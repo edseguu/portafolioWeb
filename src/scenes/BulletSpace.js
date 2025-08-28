@@ -14,6 +14,8 @@ export class BulletSpace extends Phaser.Scene {
     }
 
 	create() {
+		this.scale.on('resize', this.resize, this);
+
 
 		this.background = this.add.tileSprite(0, 0, this.scale.width, this.scale.height, 'background').setOrigin(0, 0);
 
@@ -25,18 +27,18 @@ export class BulletSpace extends Phaser.Scene {
 
 
 		
-		
+		//Animación para bullet de player
 		this.anims.create({
-			key: 'animaPlay', // El mismo nombre que usas en this.play('animaPlay')
-        	frames: this.anims.generateFrameNumbers('bullet', { start: 0, end: -1 }), // Ajusta los frames según tu spritesheet
+			key: 'animaPlay',
+        	frames: this.anims.generateFrameNumbers('bullet', { start: 0, end: -1 }), 
         	frameRate: 15,
         	repeat: -1
     	});
-		
-		// Animación para las balas enemigas
+
+		//Animación para bullet del boss
     	this.anims.create({
-            key: 'animaPlayEnemy', // Animación para bulletEnemy
-            frames: this.anims.generateFrameNumbers('bulletEnemy', { start: 0, end: -1 }), // Usa todos los frames
+            key: 'animaPlayEnemy', 
+            frames: this.anims.generateFrameNumbers('bulletEnemy', { start: 0, end: -1 }), 
             frameRate: 15,
             repeat: -1
         });
@@ -369,10 +371,10 @@ export class BulletSpace extends Phaser.Scene {
 		}
 	}
 
-	resizeBackground(gameSize) {
-		if (this.background) {
-			this.background.setSize(gameSize.width, gameSize.height);
-		}
+	resize(gameSize) { //Ajusta tamaño del BackGround a la pantalla
+		const width = gameSize.width;
+		const height = gameSize.height;
+		this.background.setDisplaySize(width, height);
 	}
 }
 

@@ -230,11 +230,11 @@ export class Start extends Phaser.Scene {
             this.cartel.setPosition(innerWidth / 2, this.text1.y - 1100)
             this.cartel2.setPosition(innerWidth / 2, this.cartel.y + 5200)
             
-            this.obj1.setScale(1.2)
-            this.obj2.setScale(1.2)
-            this.obj3.setScale(1.2)
-            this.obj4.setScale(1.2)
-            this.obj5.setScale(1.2)
+            this.obj1.setScale(3)
+            this.obj2.setScale(3)
+            this.obj3.setScale(3)
+            this.obj4.setScale(3)
+            this.obj5.setScale(3)
         }
     }
     

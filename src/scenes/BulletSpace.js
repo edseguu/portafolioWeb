@@ -116,23 +116,28 @@ export class BulletSpace extends Phaser.Scene {
 		this.bossSpeedX = 6; // velocidad del boss en X
 
 		// Grupo de balas enemigas
+		const isSmallScreen = window.innerWidth < 900 && window.innerWidth > 200;
 		this.enemyBullets = this.physics.add.group({
 			classType: BulletEnemy,
 			runChildUpdate: true,
-			maxSize: 20
+			maxSize: isSmallScreen ? 5 : 20
 		});
 
 		// Temporizador para disparar desde el boss hacia el player
-		this.bossShootDelay = 850;
+		this.bossShootDelay = isSmallScreen ? 2000 : 850;
 		this.bossShootEvent = this.time.addEvent({
 			delay: this.bossShootDelay,
 			loop: true,
 			callback: () => {
 				const bullet = this.enemyBullets.get();
 				if (bullet) {
-					const randomScale = 0.5 + Math.random() * 0.5; // Entre 0.5 y 1
+					const randomScale = 0.5 + Math.random() * 0.5;
 					bullet.setScale(randomScale);
-					bullet.fire(this.boss.x, this.boss.y + this.boss.displayHeight / 2, this.player.x, this.player.y);
+					if (isSmallScreen) {
+						bullet.fire(this.boss.x, this.boss.y + this.boss.displayHeight / 2, this.player.x, this.player.y, 120);
+					} else {
+						bullet.fire(this.boss.x, this.boss.y + this.boss.displayHeight / 2, this.player.x, this.player.y);
+					}
 				}
 			}
 		});
@@ -278,8 +283,9 @@ export class BulletSpace extends Phaser.Scene {
             this.player.body.setVelocityY(300);
         }
 
-
-
+		if (window.innerWidth < 900 && window.innerWidth > 200 && this.boss) {
+			this.boss.y = this.boss.displayHeight / 2 + 10;
+		}
 
 		if (window.innerWidth > 1000) {
 			this.player.setScale(0.6)

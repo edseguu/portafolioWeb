@@ -18,7 +18,7 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite{
         this.setActive(true);
         this.setVisible(true);
         // This is the crucial line that gives the bullet its velocity
-        this.setVelocityY(-700);
+        this.setVelocityY(-2000);
 
         this.play('animaPlay');
     }

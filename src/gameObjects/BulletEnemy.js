@@ -7,7 +7,7 @@ export class BulletEnemy extends Phaser.Physics.Arcade.Sprite {
         this.setVisible(false);
     }
 
-    fire(x, y, targetX, targetY) {
+    fire(x, y, targetX, targetY, customSpeed) {
         this.body.reset(x, y);
         this.setActive(true);
         this.setVisible(true);
@@ -15,7 +15,7 @@ export class BulletEnemy extends Phaser.Physics.Arcade.Sprite {
         const dx = targetX - x;
         const dy = targetY - y;
         const length = Math.sqrt(dx * dx + dy * dy);
-        const speed = 350;
+        const speed = typeof customSpeed === 'number' ? customSpeed : 350;
         this.lastVelocity = { x: (dx / length) * speed, y: (dy / length) * speed };
         this.setVelocity(this.lastVelocity.x, this.lastVelocity.y);
         this.followingPlayer = true;
@@ -34,7 +34,9 @@ export class BulletEnemy extends Phaser.Physics.Arcade.Sprite {
                     const dx = this.scene.player.x - this.x;
                     const dy = this.scene.player.y - this.y;
                     const length = Math.sqrt(dx * dx + dy * dy);
-                    const speed = 450;
+                    // Ajusta velocidad según pantalla
+                    const isSmallScreen = window.innerWidth < 900 && window.innerWidth > 200;
+                    const speed = isSmallScreen ? 120 : 450;
                     this.lastVelocity = { x: (dx / length) * speed, y: (dy / length) * speed };
                     this.setVelocity(this.lastVelocity.x, this.lastVelocity.y);
                 } else {

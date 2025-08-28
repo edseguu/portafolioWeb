@@ -1,8 +1,5 @@
-
-
-
 export class Bullet extends Phaser.Physics.Arcade.Sprite{
-    constructor (scene, x, y, texture){
+    constructor (scene){
         super(scene, 0, 0, 'bullet');
         scene.add.existing(this)
 
@@ -17,9 +14,9 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite{
         this.body.reset(x, y); 
         this.setActive(true);
         this.setVisible(true);
-        // This is the crucial line that gives the bullet its velocity
-        this.setVelocityY(-2000);
 
+
+        this.setVelocityY(-1300);//Set de Velocidad de bullet de player
         this.play('animaPlay');
     }
 

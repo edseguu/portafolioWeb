@@ -1,4 +1,5 @@
-import { BulletSpace, GameOverScene } from './scenes/BulletSpace.js';
+import { BulletSpace } from './scenes/BulletSpace.js';
+import { GameOverScene } from './scenes/GameOverScene.js';
 import { Start } from './scenes/Start.js';
 
 const config = {
